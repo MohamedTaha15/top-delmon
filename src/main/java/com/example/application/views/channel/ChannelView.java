@@ -19,9 +19,11 @@ import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 
+import jakarta.annotation.security.PermitAll;
 import reactor.core.Disposable;
 
 @Route(value = "channel" , layout = MainLayout.class)
+@PermitAll
 public class ChannelView extends VerticalLayout implements HasUrlParameter<String> , HasDynamicTitle{ 
 
     private String channelName;
