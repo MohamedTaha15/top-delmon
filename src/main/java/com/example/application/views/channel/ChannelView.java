@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.application.chat.ChatService;
 import com.example.application.chat.Message;
+import com.example.application.views.MainLayout;
 import com.example.application.views.lobby.LobbyView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.messages.MessageInput;
@@ -13,15 +14,16 @@ import com.vaadin.flow.component.messages.MessageList;
 import com.vaadin.flow.component.messages.MessageListItem;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 
 import reactor.core.Disposable;
 
-@Route("channel")
-public class ChannelView extends VerticalLayout implements HasUrlParameter<String> { 
+@Route(value = "channel" , layout = MainLayout.class)
+public class ChannelView extends VerticalLayout implements HasUrlParameter<String> , HasDynamicTitle{ 
 
-
+    private String channelName;
     private String channelId;
     private final ChatService chatService;
     private final MessageList messageList;
@@ -83,13 +85,19 @@ public class ChannelView extends VerticalLayout implements HasUrlParameter<Strin
 
     @Override
     public void setParameter(BeforeEvent event, String channelId) {
-    if (chatService.channel(channelId).isEmpty()) {
-        event.forwardTo(LobbyView.class);
+        chatService.channel(channelId).ifPresentOrElse(
+            channel -> this.channelName = channel.name(), 
+            () -> event.forwardTo(LobbyView.class)
+        );
         //throw new IllegalArgumentException("Invalid channel ID"); 
-    }
+    
     this.channelId = channelId;
     }
 
+    @Override
+    public String getPageTitle() {
+        return channelName;
+    }
 
 
 }
