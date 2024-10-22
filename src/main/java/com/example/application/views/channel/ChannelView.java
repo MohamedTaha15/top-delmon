@@ -18,6 +18,8 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.security.AuthenticationContext;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import jakarta.annotation.security.PermitAll;
 import reactor.core.Disposable;
@@ -32,9 +34,10 @@ public class ChannelView extends VerticalLayout implements HasUrlParameter<Strin
     private final MessageList messageList;
     private static final int HISTORY_SIZE = 20;
     private final LimitedSortedAppendOnlyList<Message> receivedMessages;
-    
+    private final String currentUserName;
 
-    public ChannelView(ChatService chatService) {
+    public ChannelView(ChatService chatService, AuthenticationContext authenticationContext) {
+        this.currentUserName = authenticationContext.getPrincipalName().orElseThrow(); 
         this.chatService = chatService;
         receivedMessages = new LimitedSortedAppendOnlyList<>(
             HISTORY_SIZE, 
@@ -58,6 +61,11 @@ public class ChannelView extends VerticalLayout implements HasUrlParameter<Strin
         message.timestamp(),
         message.author()
     );
+    item.setUserColorIndex(Math.abs(message.author().hashCode() % 7));
+    item.addClassNames(LumoUtility.Margin.SMALL, LumoUtility.BorderRadius.MEDIUM); 
+    if (message.author().equals(currentUserName)) {
+        item.addClassNames(LumoUtility.Background.CONTRAST_5); 
+    }
     return item;
     }
 

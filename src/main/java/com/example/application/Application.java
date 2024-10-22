@@ -8,10 +8,12 @@ import org.springframework.context.annotation.Bean;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.theme.Theme;
 
 
 @SpringBootApplication
 @Push
+@Theme("chat-theme")
 public class Application implements AppShellConfigurator {
 
     @Bean
