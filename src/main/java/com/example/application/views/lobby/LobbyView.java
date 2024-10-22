@@ -15,9 +15,11 @@ import com.example.application.views.MainLayout;
 import com.example.application.views.channel.ChannelView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -53,6 +55,7 @@ public class LobbyView extends VerticalLayout {
             LumoUtility.Padding.SMALL, 
             "channel-list"
         );
+        
         channels.setRenderer(new ComponentRenderer<>(this::createChannelComponent));
         add(channels);
         expand(channels); 
@@ -61,6 +64,8 @@ public class LobbyView extends VerticalLayout {
         channelNameField.setPlaceholder("Add New channel name"); 
 
         addChannelButton = new Button("Add channel" , event -> addChannel());
+        addChannelButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY); 
+        addChannelButton.addClickShortcut(Key.ENTER);
         addChannelButton.setDisableOnClick(true); 
 
         if (authenticationContext.hasRole(Roles.ADMIN)) {
