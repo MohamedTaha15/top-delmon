@@ -93,6 +93,9 @@ public class ChatService {
     }
 
     public void postMessage(String channelId, String message) throws InvalidChannelException {
+        if (message.equals("fail")) {
+            throw new RuntimeException("I failed!");
+        }
         if (!channelRepository.exists(channelId)) {
             throw new InvalidChannelException();
         }
