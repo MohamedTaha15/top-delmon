@@ -45,7 +45,8 @@ public class ChannelView extends VerticalLayout implements HasUrlParameter<Strin
         );
         setSizeFull(); 
 
-        messageList = new MessageList(); 
+        messageList = new MessageList();
+        messageList.addClassNames(LumoUtility.Border.ALL);
         messageList.setSizeFull();
         add(messageList);
 
