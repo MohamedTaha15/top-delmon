@@ -96,6 +96,9 @@ public class ChatService {
         if (message.equals("fail")) {
             throw new RuntimeException("I failed!");
         }
+        if (message.equals("null")) {
+            throw new RuntimeException("null is Not Allowed!");
+        }
         if (!channelRepository.exists(channelId)) {
             throw new InvalidChannelException();
         }
